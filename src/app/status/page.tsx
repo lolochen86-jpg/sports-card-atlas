@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Page(){return <main className="content-page"><h1>資料狀態</h1><h2>開源本機示範</h2><p>內建人物、系列與圖樣均為虛構示範，不是真實 NBA／MLB 卡片或官方清單。</p><h2>圖片與使用權</h2><p>倉庫不包含第三方球卡圖片、商標、官方 PDF、私人圖庫、會員資料或憑證。匯入自己的資料前請確認來源及權限。</p><h2>會員與收藏</h2><p>會員、投稿與管理員審核使用本機獨立 SQLite；我的收藏仍保存於瀏覽器。雲端 Auth／Storage adapter 尚未實作，不能當作已部署的 Supabase 或 Vercel 版本。</p><h2>資料原則</h2><p>卡號、版本限量與實體流水號分開；相似圖不自動合併。盒型逐卡關聯缺證據時留白。投稿經站長採用後才更新及計入好心人名單。</p><Link href="/">返回卡牆 →</Link></main>}

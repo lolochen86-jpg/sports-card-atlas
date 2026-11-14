@@ -1,0 +1,12 @@
+import Database from 'better-sqlite3';
+import fs from 'node:fs';
+import path from 'node:path';
+export const communityRoot=path.resolve(/*turbopackIgnore: true*/ process.env.ATLAS_COMMUNITY_DIR||path.join(process.cwd(),'data/community'));
+let connection:Database.Database|undefined;
+export function communityDb(){if(!connection){fs.mkdirSync(path.join(communityRoot,'uploads'),{recursive:true});connection=new Database(path.join(communityRoot,'community.sqlite'),{timeout:8000});connection.pragma('journal_mode=WAL');connection.exec(fs.readFileSync(path.join(process.cwd(),'src/lib/community-schema.sql'),'utf8'));}return connection;}
+export type Member={id:string;username:string;display_name:string;role:'member'|'admin';public_credit:number};
+export type Submission={id:string;user_id:string;card_id:string;card_label:string;kind:'report'|'image';message:string;field:string|null;value:string|null;side:string|null;file_name:string|null;source_url:string;status:string;review_note:string;created_at:number;reviewed_at:number|null;display_name?:string};
+export function approvedImages(cardId:string){return communityDb().prepare("SELECT id,side,file_name,source_url FROM submissions WHERE card_id=? AND kind='image' AND status='approved' ORDER BY reviewed_at DESC,id DESC").all(cardId) as {id:string;side:string;file_name:string;source_url:string}[];}
+export function communityImageFile(cardId:string,side:string){const im=approvedImages(cardId).find(im=>im.side===side);if(!im||!/^[-a-f0-9]+\.webp$/.test(im.file_name))return null;const file=path.join(communityRoot,'uploads',im.file_name);return fs.existsSync(file)?file:null;}
+export function applyCorrections<T extends {id:string;number:string;player:string;team:string}>(c:T):T{const rows=communityDb().prepare("SELECT c.field,c.value FROM corrections c JOIN submissions s ON s.id=c.submission_id WHERE c.card_id=? AND s.status='approved' ORDER BY s.reviewed_at ASC,s.id ASC").all(c.id) as {field:string;value:string}[];const result={...c};for(const row of rows){if(row.field==='number'||row.field==='player'||row.field==='team')result[row.field]=row.value;}return result;}
+export function supporters(){return communityDb().prepare("SELECT u.id,u.display_name,count(*) contributions,sum(s.kind='image') images,sum(s.kind='report') corrections FROM submissions s JOIN users u ON u.id=s.user_id WHERE s.status='approved' AND u.public_credit=1 AND u.role='member' GROUP BY u.id ORDER BY contributions DESC,u.created_at ASC LIMIT 50").all();}

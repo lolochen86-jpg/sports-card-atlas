@@ -1,0 +1,3 @@
+import fs from 'node:fs';import path from 'node:path';
+export const runtime='nodejs';
+export async function GET(_req:Request,{params}:{params:Promise<{document:string}>}){const {document}=await params;if(!['checklist','odds'].includes(document)||!process.env.ATLAS_DOCUMENT_ROOT)return new Response('Document not configured',{status:404});const file=path.join(process.env.ATLAS_DOCUMENT_ROOT,document+'.pdf');if(!fs.existsSync(file))return new Response('Not found',{status:404});return new Response(fs.readFileSync(file),{headers:{'Content-Type':'application/pdf','Cache-Control':'private, max-age=3600'}})}

@@ -1,0 +1,4 @@
+import sharp from 'sharp';
+import {boxFile,imageFile} from '@/lib/catalog';
+export const runtime='nodejs';
+export async function GET(req:Request,{params}:{params:Promise<{kind:string;id:string}>}){const {kind,id}=await params;const u=new URL(req.url);if(kind!=='box'&&u.searchParams.get('preview')!=='1')return new Response(null,{status:403});const side=u.searchParams.get('side')==='back'?'back':'front';const file=kind==='box'?boxFile(id):kind==='card'?imageFile(id,side):null;if(!file)return new Response(null,{status:404});try{const width=Math.min(1600,Math.max(120,Number(u.searchParams.get('w'))||420));const buf=await sharp(file,{limitInputPixels:60000000}).rotate().resize({width,height:width*1.5,fit:'inside',withoutEnlargement:true}).webp({quality:82}).toBuffer();return new Response(new Uint8Array(buf),{headers:{'Content-Type':'image/webp','Cache-Control':'private, max-age=3600','X-Content-Type-Options':'nosniff'}});}catch{return new Response(null,{status:422});}}

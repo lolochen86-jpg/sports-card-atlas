@@ -1,0 +1,5 @@
+'use client';
+import Link from 'next/link';
+import {usePathname} from 'next/navigation';
+export function Shell({children}:{children:React.ReactNode}){const pathname=usePathname();const active=pathname.startsWith('/community')||pathname.startsWith('/admin')?'/community':pathname.startsWith('/collection')?'/collection':pathname.startsWith('/status')?'/status':'/';return <><header className="topbar"><Link href="/" className="logo"><i/>SPORTS CARD <b>ATLAS</b></Link><nav aria-label="主選單">{[['/','球盒圖鑑'],['/collection','我的收藏'],['/status','資料狀態'],['/community','會員／投稿']].map(([href,label])=><Link key={href} href={href} aria-current={active===href?'page':undefined}>{label}</Link>)}</nav><span className="private"><i/>開源本機示範</span></header>{children}<footer>SPORTS CARD ATLAS <span>MIT 程式碼 · 示範資料 · 非官方網站</span><a href="/status">查看資料說明 ↗</a></footer></>;}
+export function Empty({text='尚無圖片',sub='保留官方卡號位置'}:{text?:string;sub?:string}){return <div className="empty-image"><span>ATLAS</span><strong>{text}</strong><small>{sub}</small></div>;}

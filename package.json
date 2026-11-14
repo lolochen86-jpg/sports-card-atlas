@@ -1,0 +1,33 @@
+{
+  "name": "sports-card-atlas",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 3240",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 3240",
+    "typecheck": "tsc --noEmit",
+    "setup": "node scripts/seed-demo.cjs",
+    "setup:owner": "node scripts/create-community-owner.cjs",
+    "test": "node tests/smoke.cjs",
+    "check:public": "node scripts/check-public.cjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "next": "16.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=26"
+  }
+}

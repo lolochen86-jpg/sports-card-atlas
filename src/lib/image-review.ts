@@ -1,0 +1,3 @@
+import fs from 'node:fs';import path from 'node:path';import {createHash} from 'node:crypto';
+let decisions:Map<string,Set<string>>|undefined;
+export function imageReviewAllows(cardId:string,file:string){if(!decisions){decisions=new Map();const index=path.join(process.cwd(),'data/image-review-decisions-v1.json');if(fs.existsSync(index)){const data=JSON.parse(fs.readFileSync(index,'utf8')) as {decisions:{card_id:string|null;sha256:string}[]};for(const d of data.decisions){if(!d.card_id)continue;const set=decisions.get(d.card_id)||new Set<string>();set.add(d.sha256);decisions.set(d.card_id,set);}}}const blocked=decisions.get(cardId);if(!blocked)return true;try{return !blocked.has(createHash('sha256').update(fs.readFileSync(file)).digest('hex'))}catch{return false}}
