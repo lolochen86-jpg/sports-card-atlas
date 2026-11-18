@@ -1,3 +1,4 @@
+import localPublishedImages from './local-published-images.json';
 import {officialPreviews} from './official-previews';
 import Database from 'better-sqlite3';
 import {imageReviewAllows} from './image-review';
@@ -40,7 +41,7 @@ let evidence:unknown[]=[];try{evidence=db('pilot').prepare("SELECT page,locator,
 return applyCorrections({...c,player:sub.map(x=>x.display_name).join(' / '),team:[...new Set(sub.map(x=>x.team_name).filter(Boolean))].join(' / '),product:p,variants,parallels,images:candidateImages(id),evidence});}
 export type CandidateImage={id:string;side:string;source_title:string;source_page_url:string;source_image_url:string};
 export function candidateImages(id:string):CandidateImage[]{return [...approvedImages(id).map(im=>({id:im.id,side:im.side,source_title:'社群投稿（站長已採用）',source_page_url:im.source_url||'',source_image_url:'/media/card/'+id+'?preview=1&side='+im.side})),...todayImages(id),...linkedImages(id)] as CandidateImage[];}
-export function imageFile(id:string,side:string){const accepted=communityImageFile(id,side);if(accepted)return accepted;for(const im of [...todayImages(id),...linkedImages(id)].filter(im=>im.side===side)){const file=safeFile(paths.imageRoot,im.file_name);if(file&&imageReviewAllows(id,file))return file;}return null;}
+export function imageFile(id:string,side:string){const accepted=communityImageFile(id,side);if(accepted)return accepted;for(const im of [...todayImages(id),...linkedImages(id)].filter(im=>im.side===side)){const file=safeFile(id.startsWith('f27_')?path.join(process.cwd(),'public/catalog-images'):paths.imageRoot,im.file_name);if(file&&imageReviewAllows(id,file))return file;}return null;}
 export function boxFile(slug:string){const name=slug===flagshipSlug?'2026-27-topps-basketball.jpg':boxes()[slug];return name?safeFile(paths.boxRoot,name):null;}
 function safeFile(root:string,name:string){try{const r=fs.realpathSync(root),p=fs.realpathSync(path.resolve(root,name));return p.toLowerCase().startsWith(r.toLowerCase()+path.sep)&&fs.statSync(p).isFile()?p:null;}catch{return null;}}
 
@@ -48,7 +49,7 @@ function flagshipCard(id:string){const r=db('flagship');const c=r.prepare('SELEC
 
 type LinkedImage=CandidateImage&{file_name:string;series_slug:string;set_id:string};
 function linkedImages(id:string):LinkedImage[]{
- if(id.startsWith('f27_'))return [];
+ if(id.startsWith('f27_'))return localPublishedImages.filter(im=>im.card_id===id).map(im=>({...im,series_slug:flagshipSlug,set_id:''}));
  const pilot=db('pilot').prepare('SELECT set_id FROM cards WHERE id=?').get(id) as {set_id:string}|undefined;
  const identity=pilot?{set_id:pilot.set_id,slug:PILOT_SLUG}:db('catalog').prepare('SELECT c.set_id,s.slug FROM cards c JOIN card_sets t ON t.id=c.set_id JOIN series s ON s.id=t.series_id WHERE c.id=?').get(id) as {set_id:string;slug:string}|undefined;
  if(!identity)return [];
