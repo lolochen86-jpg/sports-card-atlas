@@ -57,7 +57,7 @@ npm run check:public
 
 ## 部署狀態
 
-目前是 **可運作的本機 Node.js＋SQLite 版本**。Supabase Auth／Database／Storage adapter 與 Vercel serverless 遷移是後續工作，**沒有宣稱已整合或上線**。不要把可寫會員 DB 放入無持久儲存的函式環境，也不要以部署頁面能開啟當作會員／上傳功能驗收。[部署與限制](docs/deployment.md)
+支援本機 SQLite，以及 Vercel＋Supabase Postgres／私有 Storage 雲端模式。雲端保留帳號密碼與伺服器工作階段，並非 Supabase Auth。雲端上傳總量上限 4 MB；收藏仍在瀏覽器，不隨登入同步。部署需套用 migration 並設定伺服器環境變數，見 [部署說明](docs/deployment.md)。
 
 此專案不是 Topps、Panini、NBA、MLB 或任何球員的官方網站。匯入者須確認來源、圖片權利及資料正確性。
 
