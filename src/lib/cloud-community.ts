@@ -3,17 +3,20 @@ import sharp from 'sharp';
 import {apiError,HttpError,readJson,sameOrigin} from './community-auth';
 import {card} from './catalog';
 export const cloudEnabled=()=>!!process.env.ATLAS_CLOUD_GATEWAY;
+export const cloudReady=()=>cloudEnabled()&&process.env.ATLAS_COMMUNITY_READY==='1';
 type Overlay={rows:{id:string;card_id:string;kind:string;side:string;source_url:string}[];corrections:{submission_id:string;card_id:string;field:string;value:string}[]};
 export const cloudContext=new AsyncLocalStorage<Overlay>();
 const publicActions=new Set(['me','supporters','mine','admin','register','login','logout','preferences','password','submit','review','image']);
 export async function gateway(action:string,req?:Request,body?:BodyInit,query?:URLSearchParams){const url=new URL(process.env.ATLAS_CLOUD_GATEWAY!);url.searchParams.set('action',action);query?.forEach((v,k)=>{if(k!=='action')url.searchParams.set(k,v)});const headers=new Headers({'x-atlas-key':process.env.ATLAS_CLOUD_KEY!});if(req?.headers.get('cookie'))headers.set('cookie',req.headers.get('cookie')!);if(body&&typeof body==='string')headers.set('content-type','application/json');return fetch(url,{method:body?'POST':'GET',headers,body,cache:'no-store',signal:AbortSignal.timeout(45000)});}
-export async function withCloud<T>(fn:()=>T){if(!cloudEnabled())return fn();const r=await gateway('overlay');if(!r.ok)throw new Error('Community overlay unavailable');return cloudContext.run(await r.json() as Overlay,fn);}
+export async function withCloud<T>(fn:()=>T){if(!cloudReady())return fn();const r=await gateway('overlay');if(!r.ok)throw new Error('Community overlay unavailable');return cloudContext.run(await r.json() as Overlay,fn);}
 export async function cloudRoute(action:string,req:Request){try{
+ if(!cloudReady())throw new HttpError(503,'會員與投稿尚在啟用中，請稍後再試；目前不接受註冊或投稿');
  if(!publicActions.has(action)||action==='image')throw new HttpError(404,'找不到此入口');
  let body:BodyInit|undefined;
  if(req.method==='POST'){
   sameOrigin(req);
   if(action==='submit'){
+   const auth=await gateway('me',req);if(!auth.ok)throw new HttpError(503,'會員服務暫時無法使用');if(!(await auth.json()).user)throw new HttpError(401,'請先登入');
    // Vercel's request payload limit is 4.5 MB; give a usable limit below it.
    const max=4*1024*1024;if(Number(req.headers.get('content-length'))>max)throw new HttpError(413,'線上投稿總量上限為 4 MB，請縮小圖片');
    const reader=req.body?.getReader();if(!reader)throw new HttpError(400,'缺少投稿內容');let n=0;const chunks:Uint8Array[]=[];while(true){const {done,value}=await reader.read();if(done)break;n+=value.length;if(n>max){await reader.cancel();throw new HttpError(413,'線上投稿總量上限為 4 MB')}chunks.push(value);}

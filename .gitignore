@@ -20,3 +20,5 @@ local-maintainer/
 .vercel/
 .firecrawl/
 **/owner-initial-credentials.txt
+
+supabase/.temp/
