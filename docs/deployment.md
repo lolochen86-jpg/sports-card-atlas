@@ -9,7 +9,7 @@ Cloud mode uses Next.js, bundled synthetic catalogs, and a dedicated Supabase pr
 1. Apply the SQL migration under supabase/migrations to a dedicated project. RLS is enabled; browser roles have no grants; RPC execution is service-only. The upload bucket is private.
 2. Generate a strong random gateway token. Replace __ATLAS_GATEWAY_TOKEN_SHA256__ in the Edge Function only in a private deployment payload. Deploy atlas-community with JWT verification disabled because the function authenticates the gateway token itself. Its managed service-role key stays inside Supabase; never commit live tokens.
 3. Set server-only Vercel production variables ATLAS_CLOUD_GATEWAY (function URL), ATLAS_CLOUD_KEY (sensitive token), ATLAS_PUBLIC_ORIGIN (exact HTTPS origin). No browser credential. Configure preview separately. Set ATLAS_COMMUNITY_READY=1 only after migration and cloud acceptance; otherwise catalog browsing remains available and membership returns an explicit 503 activation notice.
-4. Build: npm run setup && npm run build, Node 26. Only fictional DEMO artwork is generated. Next output tracing bundles data/demo.
+4. Build: npm run setup && npm run build, Node 26. The build generates fictional DEMO artwork and reconstructs the public Flagship catalog from structured checklist data. Next output tracing bundles data/demo.
 5. Provision a private random-password administrator through the database operator. Admins do not consume member seats; never automatically promote a public registration.
 
 ## Operational limits

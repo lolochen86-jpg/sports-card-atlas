@@ -1,0 +1,81 @@
+{
+  "documents": {
+    "checklist": {
+      "url": "https://cdn.shopify.com/s/files/1/0662/9749/5709/files/Copy_of_2026-27_Topps_Flagship_Basketball_Checklist_10-9-26.xls_-_Compatibility_Mode.pdf?v=1791570579",
+      "sha256": "12ebf08ff5bb7abdbe1aedbd8cc93778881fd7fe7714e8d1cb88d232263a0e29",
+      "page_count": 57,
+      "fetched_at": "2026-11-13T08:11:18.269713+08:00"
+    },
+    "odds": {
+      "url": "https://cdn.shopify.com/s/files/1/0662/9749/5709/files/2026-11-04_2026-27-Topps-Flagship-Basketball_Odds_11.pdf?v=1793888908",
+      "sha256": "ee7e4ce2efeb91dfbec06fcff171d14580f9e85259972ebe12a7f2d087758861",
+      "page_count": 10,
+      "fetched_at": "2026-11-13T08:11:20.711950+08:00"
+    }
+  },
+  "previews": [
+    {
+      "card_id": "f27_c_1d1c81035d364ec0aec43209",
+      "label": "Darius Acuff Jr. · Base #262",
+      "version": "官方一般版示意；尚未匯入原圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/26TBSK_1462_FR.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    },
+    {
+      "card_id": "f27_c_c1792b963200fa92f67a27c6",
+      "label": "Vince Carter · Levitation LV-7",
+      "version": "未明列平行版；尚未匯入原圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/26TBSK_3207_FR-2.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    },
+    {
+      "card_id": "f27_c_8e1f1929353d70488bb7b3ab",
+      "label": "Cameron Boozer · Hardwood Stars HS-18",
+      "version": "未明列平行版；尚未匯入原圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/26TBSK_5018_FR.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    },
+    {
+      "card_id": "f27_c_7e84ae92b5f19e11a4fdf5df",
+      "label": "Keaton Wagler · Bounce TB-20",
+      "version": "未明列平行版；尚未匯入原圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/26TBSK_5120_FR.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    },
+    {
+      "card_id": "f27_c_db0692d8fb11e356ab9499ea",
+      "label": "Cooper Flagg · Poster Factory PF-16",
+      "version": "官方卡種示意；尚未匯入原圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/2026_Topps_Flagship_Basketball_PosterFactory_Base_CooperFlagg_FR-1-2.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    },
+    {
+      "card_id": "f27_c_c2314da0b2be72585f4c45e7",
+      "label": "Stephen Curry · Flagship Real One Autograph #130",
+      "version": "Gold Rainbow 簽名平行版；不能作一般版圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/26TBSK_5715_FR_Gold_Rainbow-1.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    },
+    {
+      "card_id": "f27_c_0f77bd50383e3186114e65dd",
+      "label": "Luka Dončić · Own the Game OWN-LD",
+      "version": "Black Rainbow /10；不能作一般版圖",
+      "source_url": "https://ripped.topps.com/2026-27-topps-flagship-basketball-checklist/",
+      "image_url": "https://ripped.topps.com/wp-content/uploads/2026/10/26TBSK_6501_FR-1.webp",
+      "status": "official_preview_link_only",
+      "file_imported": false
+    }
+  ]
+}

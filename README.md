@@ -4,7 +4,7 @@ An open-source, local-first sports card wall and moderated contribution portal.
 
 繁體中文介面。以運動 → 年份 → 系列瀏覽密集卡牆，保留缺圖位置，將卡片身分、圖片、平行版本與實體收藏分開。
 
-**本倉庫是獨立開源示範版，不含原使用者的網站資料、圖庫、會員或憑證。內建人物、系列及圖樣均為虛構，不是真實 NBA／MLB 球員卡或官方清單。**
+首批正式目錄為 2026–27 Topps Flagship Basketball，依 Topps checklist 建立卡位並保留來源頁碼。另提供標有 DEMO 的虛構系列供測試。正式系列圖片以官方預覽連結與站長採用的投稿提供。
 
 ## Quick start
 

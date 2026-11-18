@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3240",
-    "build": "next build",
+    "build": "node scripts/seed-public-catalog.cjs && next build",
     "start": "next start --hostname 127.0.0.1 --port 3240",
     "typecheck": "tsc --noEmit",
     "setup": "node scripts/seed-demo.cjs",
