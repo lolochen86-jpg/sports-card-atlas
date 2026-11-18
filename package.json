@@ -10,7 +10,8 @@
     "setup": "node scripts/seed-demo.cjs",
     "setup:owner": "node scripts/create-community-owner.cjs",
     "test": "node tests/smoke.cjs",
-    "check:public": "node scripts/check-public.cjs"
+    "check:public": "node scripts/check-public.cjs",
+    "check:edge": "npx --yes deno@2.9.6 check supabase/functions/atlas-community/index.ts"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3",

@@ -19,7 +19,7 @@ async function member(req:Request,required=false,admin=false){const token=(req.h
 function passwordHash(password:string){const salt=randomBytes(16).toString('hex');return salt+':'+scryptSync(password,salt,64,{N:32768,r:8,p:1,maxmem:67108864}).toString('hex');}
 function matches(password:string,stored:string){const [salt,hex]=stored.split(':');const derived=scryptSync(password,salt,64,{N:32768,r:8,p:1,maxmem:67108864}),expected=Buffer.from(hex,'hex');return expected.length===derived.length&&timingSafeEqual(expected,derived);}
 async function session(u:any){const token=randomBytes(32).toString('hex');await rest('atlas_sessions?expires_at=lte.'+Date.now(),'DELETE');await rest('atlas_sessions','POST',{token_hash:hash(token),user_id:u.id,expires_at:Date.now()+604800000});return json({user:publicUser(u)},200,{'Set-Cookie':`atlas_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800`});}
-async function storage(name:string,method='GET',body?:Uint8Array){return fetch(base+'/storage/v1/object/atlas-uploads/'+encodeURIComponent(name),{method,headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'image/webp'},body});}
+async function storage(name:string,method='GET',body?:Uint8Array){return fetch(base+'/storage/v1/object/atlas-uploads/'+encodeURIComponent(name),{method,headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'image/webp'},body:body?new Uint8Array(body):undefined});}
 Deno.serve(async(req:Request)=>{try{
  if(TOKEN_SHA256.startsWith('__')||hash(req.headers.get('x-atlas-key')||'')!==TOKEN_SHA256)return json({error:'Unauthorized'},401);
  const action=new URL(req.url).searchParams.get('action')||'';
