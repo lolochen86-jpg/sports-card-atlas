@@ -9,6 +9,7 @@ export const cloudContext=new AsyncLocalStorage<Overlay>();
 const publicActions=new Set(['me','supporters','mine','admin','register','login','logout','preferences','password','submit','review','image']);
 export async function gateway(action:string,req?:Request,body?:BodyInit,query?:URLSearchParams){const url=new URL(process.env.ATLAS_CLOUD_GATEWAY!);url.searchParams.set('action',action);query?.forEach((v,k)=>{if(k!=='action')url.searchParams.set(k,v)});const headers=new Headers({'x-atlas-key':process.env.ATLAS_CLOUD_KEY!});if(req?.headers.get('cookie'))headers.set('cookie',req.headers.get('cookie')!);if(body&&typeof body==='string')headers.set('content-type','application/json');return fetch(url,{method:body?'POST':'GET',headers,body,cache:'no-store',signal:AbortSignal.timeout(45000)});}
 export async function withCloud<T>(fn:()=>T){if(!cloudReady())return fn();const r=await gateway('overlay');if(!r.ok)throw new Error('Community overlay unavailable');return cloudContext.run(await r.json() as Overlay,fn);}
+export function relayCloud(r:Response){const headers=new Headers({'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});headers.set('Content-Type',r.headers.get('content-type')||'application/json');for(const cookie of r.headers.getSetCookie()){if(cookie.startsWith('atlas_session='))headers.append('Set-Cookie',cookie);}return new Response(r.body,{status:r.status,headers});}
 export async function cloudRoute(action:string,req:Request){try{
  if(!cloudReady())throw new HttpError(503,'會員與投稿尚在啟用中，請稍後再試；目前不接受註冊或投稿');
  if(!publicActions.has(action)||action==='image')throw new HttpError(404,'找不到此入口');
@@ -30,5 +31,5 @@ export async function cloudRoute(action:string,req:Request){try{
    body=form;
   }else body=JSON.stringify(await readJson(req));
  }
- const r=await gateway(action,req,body,new URL(req.url).searchParams);return new Response(r.body,{status:r.status,headers:r.headers});
+ const r=await gateway(action,req,body,new URL(req.url).searchParams);return relayCloud(r);
 }catch(e){return apiError(e)}}
